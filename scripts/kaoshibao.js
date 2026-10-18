@@ -38,6 +38,7 @@ try {
         obj.data.is_show_ad = "0";
         obj.data.auto_analysis_package = "99999";
         obj.data.remove_error_limit = "99999";
+        if (obj.data.rest_exam_count !== undefined) obj.data.rest_exam_count = "9999";
         
         if (!obj.data.feature_vips) {
             obj.data.feature_vips = [{
