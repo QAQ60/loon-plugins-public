@@ -31,6 +31,11 @@ const url = $request.url;
 const body = $response.body;
 
 if (!body) {
+    try {
+        if (/userinfo/i.test($request.url)) {
+            $notification.post("考试宝: body 为空", "脚本已执行，但 Loon 未提供响应体", "请对照是否开着抓包");
+        }
+    } catch (e) {}
     $done({});
     return;
 }
