@@ -6,8 +6,8 @@
 ^https:\/\/(api\.ankianki\.com|api\.kaoshibao\.com|ksbapi\.jxedt\.com)\/banner\/get$ - reject
 
 [Script]
-http-response ^https:\/\/(api\.ankianki\.com|api\.kaoshibao\.com|ksbapi\.jxedt\.com)\/[Uu]ser script-path=https://fastly.jsdelivr.net/gh/QAQ60/loon-plugins-public@master/scripts/kaoshibao.js?v=4, requires-body=true, timeout=60, tag=kaoshibao-user
-http-response ^https:\/\/(api\.ankianki\.com|api\.kaoshibao\.com|ksbapi\.jxedt\.com|search-api\.yisouti\.com)\/(kaoShi|paper|mockExam|document|questions|search|banner|vip|member|pay|order)\/ script-path=https://fastly.jsdelivr.net/gh/QAQ60/loon-plugins-public@master/scripts/kaoshibao.js?v=4, requires-body=true, timeout=60, tag=kaoshibao-api
+http-response ^https:\/\/(api\.ankianki\.com|api\.kaoshibao\.com|ksbapi\.jxedt\.com)\/[Uu]ser script-path=https://fastly.jsdelivr.net/gh/QAQ60/loon-plugins-public@47b0382/scripts/kaoshibao.js, requires-body=true, timeout=60, tag=kaoshibao-user
+http-response ^https:\/\/(api\.ankianki\.com|api\.kaoshibao\.com|ksbapi\.jxedt\.com|search-api\.yisouti\.com)\/(kaoShi|paper|mockExam|document|questions|search|banner|vip|member|pay|order)\/ script-path=https://fastly.jsdelivr.net/gh/QAQ60/loon-plugins-public@47b0382/scripts/kaoshibao.js, requires-body=true, timeout=60, tag=kaoshibao-api
 
 [MITM]
 hostname = %APPEND% ksbapi.jxedt.com, api.ankianki.com, api.kaoshibao.com, search-api.yisouti.com
@@ -18,6 +18,6 @@ hostname = %APPEND% ksbapi.jxedt.com, api.ankianki.com, api.kaoshibao.com, searc
 # 2. api.ankianki.com / api.kaoshibao.com 为历史域名，保留兼容旧版本。
 # 3. 与 lcks.plugin 会命中同一批 /user 接口，两个插件不要同时启用。
 # 4. 脚本地址默认 fastly.jsdelivr.net，下载失败时依次替换为：
-#    https://gcore.jsdelivr.net/gh/QAQ60/loon-plugins-public@master/scripts/kaoshibao.js?v=4
-#    https://cdn.jsdelivr.net/gh/QAQ60/loon-plugins-public@master/scripts/kaoshibao.js?v=4
+#    https://gcore.jsdelivr.net/gh/QAQ60/loon-plugins-public@47b0382/scripts/kaoshibao.js
+#    https://cdn.jsdelivr.net/gh/QAQ60/loon-plugins-public@47b0382/scripts/kaoshibao.js
 #    https://ghfast.top/https://raw.githubusercontent.com/QAQ60/loon-plugins-public/master/scripts/kaoshibao.js?v=4
