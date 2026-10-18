@@ -206,6 +206,12 @@ try {
 
     setBuyNumberToZero(obj);
 
+    try {
+        if (/userinfo/i.test(url)) {
+            $notification.post("考试宝脚本: 已改写", "vip_type=" + (obj.data ? obj.data.vip_type : "?"), "剩余考试 " + (obj.data ? obj.data.rest_exam_count : "?"));
+        }
+    } catch (e) {}
+
     $done({ body: JSON.stringify(obj) });
 } catch (e) {
     console.log("[kaoshibao] parse failed: " + e + " | body head: " + String(body).slice(0, 120));
