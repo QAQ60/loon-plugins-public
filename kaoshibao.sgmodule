@@ -1,0 +1,9 @@
+#!name=考试宝 kaoshibao
+#!desc=考试宝 VIP/付费题库/搜题识图解锁（Shadowrocket 模块）
+#!system=ios
+
+[Script]
+http-response ^https:\/\/(ksbapi\.jxedt\.com|api\.ankianki\.com|api\.kaoshibao\.com|search-api\.ksedt\.com|search-api\.yisouti\.com|gw-api\.jxedt\.com)\/ script-path=https://fastly.jsdelivr.net/gh/QAQ60/loon-plugins-public@a5debcd/scripts/kaoshibao.js, requires-body=1, timeout=60, tag=kaoshibao
+
+[MITM]
+hostname = %APPEND% ksbapi.jxedt.com, api.ankianki.com, api.kaoshibao.com, search-api.ksedt.com, search-api.yisouti.com, gw-api.jxedt.com
