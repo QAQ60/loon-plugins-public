@@ -12,7 +12,8 @@
 ### 考试宝插件说明
 
 - 上游 `Yu9191/Rewrite` 账号已被删除，原 `kaoshibao.js` 地址 404，插件改为引用本仓库 `scripts/kaoshibao.js`，不再依赖第三方。
-- 接口域名：`api.ankianki.com`（旧）与 `api.kaoshibao.com`（新）解析到同一后端 `fe-jx-v4.op.jxedt.com`，插件同时覆盖两者。
+- 实测真实接口域名为 `ksbapi.jxedt.com`（与驾校一点通共用后端），插件已覆盖；`api.ankianki.com`、`api.kaoshibao.com` 为历史域名，保留兼容。
+- 注意：本插件与 `lcks.plugin` 会命中同一个 `/user/userInfo/get` 接口，Loon 对同一 URL 只执行先加载的一个脚本，两者不要同时启用。
 - 相比原脚本修复了 `body` 为空时 `$done` 被调用两次的问题，并用 IIFE 包裹避免顶层 `return` 在部分引擎下报错。
 
 订阅地址：

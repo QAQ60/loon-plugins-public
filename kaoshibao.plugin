@@ -1,21 +1,22 @@
 #!name=考试宝 kaoshibao
-#!desc=考试宝 VIP/付费题库解锁。由 Yu9191 的 QX 重写转换，脚本自托管，并已补上 api.kaoshibao.com 新域名。
+#!desc=考试宝 VIP/付费题库解锁。真实接口域名 ksbapi.jxedt.com，脚本自托管。
 #!tag=考试宝
 
 [Rewrite]
-^https:\/\/(api\.ankianki\.com|api\.kaoshibao\.com)\/banner\/get$ - reject
+^https:\/\/(api\.ankianki\.com|api\.kaoshibao\.com|ksbapi\.jxedt\.com)\/banner\/get$ - reject
 
 [Script]
-http-response ^https:\/\/(api\.ankianki\.com|api\.kaoshibao\.com|search-api\.yisouti\.com)\/(user\/userInfo\/get|search\/(getOcrStatus|ocr2|mixPaper)|kaoShi\/.*|paper\/(home|topErrors)|user\/coupon\/getExpireInfo|mockExam\/config|document\/file|questions\/fetch) script-path=https://fastly.jsdelivr.net/gh/QAQ60/loon-plugins-public@master/scripts/kaoshibao.js, requires-body=true, timeout=60, tag=kaoshibao
+http-response ^https:\/\/(api\.ankianki\.com|api\.kaoshibao\.com|ksbapi\.jxedt\.com|search-api\.yisouti\.com)\/(user\/userInfo\/get|search\/(getOcrStatus|ocr2|mixPaper)|kaoShi\/.*|paper\/(home|topErrors)|user\/coupon\/getExpireInfo|mockExam\/config|document\/file|questions\/fetch) script-path=https://fastly.jsdelivr.net/gh/QAQ60/loon-plugins-public@master/scripts/kaoshibao.js, requires-body=true, timeout=60, tag=kaoshibao
 
 [MITM]
-hostname = %APPEND% api.ankianki.com, api.kaoshibao.com, search-api.yisouti.com
+hostname = %APPEND% ksbapi.jxedt.com, api.ankianki.com, api.kaoshibao.com, search-api.yisouti.com
 
 # 说明:
-# - api.ankianki.com 为旧域名，api.kaoshibao.com 为新域名，两者解析到同一后端
-#   (43.144.202.140 / fe-jx-v4.op.jxedt.com)，同时保留可兼容新旧版本 App。
-# - 若只想走新域名，把上面三条里的 api.ankianki.com 删掉即可。
-# - 默认用 fastly.jsdelivr.net（国内连通性较好）；若仍下载失败，依次尝试：
-#   https://gcore.jsdelivr.net/gh/QAQ60/loon-plugins-public@master/scripts/kaoshibao.js
-#   https://cdn.jsdelivr.net/gh/QAQ60/loon-plugins-public@master/scripts/kaoshibao.js
-#   https://ghfast.top/https://raw.githubusercontent.com/QAQ60/loon-plugins-public/master/scripts/kaoshibao.js
+# 1. 实测考试宝真实接口域名为 ksbapi.jxedt.com（与驾校一点通共用同一套后端），
+#    api.ankianki.com / api.kaoshibao.com 为历史域名，保留以兼容旧版本 App。
+# 2. 与 lcks.plugin（驾校一点通）会命中同一个 /user/userInfo/get 接口，
+#    两者同时启用时 Loon 只会执行先加载的那个脚本，建议只保留一个。
+# 3. 脚本地址默认 fastly.jsdelivr.net，下载失败时依次替换为：
+#    https://gcore.jsdelivr.net/gh/QAQ60/loon-plugins-public@master/scripts/kaoshibao.js
+#    https://cdn.jsdelivr.net/gh/QAQ60/loon-plugins-public@master/scripts/kaoshibao.js
+#    https://ghfast.top/https://raw.githubusercontent.com/QAQ60/loon-plugins-public/master/scripts/kaoshibao.js
