@@ -1,0 +1,15 @@
+#!name=考试宝 mock 测试
+#!desc=临时测试插件：不读取响应体，直接伪造 getExtra 返回，用于验证不开抓包是否可行。用完请删除。
+#!tag=考试宝测试
+
+[Rewrite]
+^https:\/\/ksbapi\.jxedt\.com\/user\/userInfo\/getExtra mock-response-body data-type=json data="{\"code\":\"200\",\"data\":{\"is_guide\":\"0\",\"total_practice_count\":\"0\",\"creator_count\":\"202,124\",\"rest_exam_count\":\"9999\",\"vip_type\":\"2\",\"vip_level\":\"2\",\"vip_expiration_time\":\"2099-09-09 09:09:09\",\"yst_vip_type\":\"2\",\"yst_vip_expiration_time\":\"2099-09-09 09:09:09\",\"is_show_ad\":\"0\",\"auto_analysis_package\":\"99999\",\"remove_error_limit\":\"99999\",\"feature_vips\":[{\"id\":\"1\",\"name\":\"高级VIP\",\"expiration_time\":\"2099-09-09 09:09:09\"}]},\"time\":\"1792331182\"}" status-code=200
+
+[MITM]
+hostname = %APPEND% ksbapi.jxedt.com
+
+# 用法：先停用主插件「考试宝 kaoshibao」，再启用本插件，关闭抓包，杀掉 App 重进「我的」。
+# 结果判断：
+#   显示高级VIP → 方案可行，我继续把 userInfo/get 也改成 mock
+#   提示数据异常/白屏 → App 校验了 encrypt 字段，此路不通
+#   无任何变化 → App 用的是 userInfo/get 的字段，需要覆盖那个接口
