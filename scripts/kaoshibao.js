@@ -52,7 +52,16 @@ function setBuyNumberToZero(obj) {
 }
 
 try {
-    let obj = JSON.parse(body);
+    let obj;
+    try {
+        obj = JSON.parse(body);
+    } catch (e0) {
+        // Loon 3.5.0 某些响应会把 HTTP 头拼进 body，这里截取首个 { 到末个 }
+        const raw = String(body);
+        const a = raw.indexOf("{"), b = raw.lastIndexOf("}");
+        if (a >= 0 && b > a) obj = JSON.parse(raw.slice(a, b + 1));
+        else throw e0;
+    }
 
     if (/search-api\.ksedt\.com/i.test(url)) {
         obj = unlockSearch(obj);
