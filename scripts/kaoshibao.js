@@ -6,6 +6,26 @@
 [mitm]
 hostname = api.ankianki.com, search-api.yisouti.com
 */
+
+function unlockSearch(o) {
+    // 只放宽"剩余次数"类字段，不动 limit / total_count 这类分页或统计字段
+    var LIMIT = /^(times|rest|rest_count|rest_times|free_count|free_times|remain|remain_count|remain_times|left_count|left_times|usable_count|ocr_limit|search_limit|daily_limit|photo_count|pic_count)$/i;
+    var FLAG = /^(is_vip|isVip|need_pay|needPay|is_pay|isPay|can_search|canSearch|photo_search_status|need_vip|is_limit)$/i;
+    (function walk(v) {
+        if (!v || typeof v !== "object") return;
+        for (var k in v) {
+            var val = v[k];
+            if (val && typeof val === "object") { walk(val); continue; }
+            if (LIMIT.test(k) && (typeof val === "number" || typeof val === "string")) {
+                v[k] = (typeof val === "number") ? 9999 : "9999";
+            } else if (FLAG.test(k)) {
+                v[k] = (typeof val === "boolean") ? true : (typeof val === "number" ? 1 : "1");
+            }
+        }
+    })(o);
+    return o;
+}
+
 (function () {
 const url = $request.url;
 const body = $response.body;
@@ -29,7 +49,16 @@ function setBuyNumberToZero(obj) {
 try {
     let obj = JSON.parse(body);
 
-    if (/userinfo/i.test(url) && obj.data) {
+    if (/search-api\.ksedt\.com/i.test(url)) {
+        obj = unlockSearch(obj);
+    }
+    else if (/gw-api\.jxedt\.com\/app\/config/i.test(url)) {
+        if (obj.result && obj.result.qstskill && obj.result.qstskill.data) {
+            obj.result.qstskill.data.times = 9999;
+            if (obj.result.qstskill.data.enable !== undefined) obj.result.qstskill.data.enable = 1;
+        }
+    }
+    else if (/userinfo/i.test(url) && obj.data) {
         obj.data.vip_type = "2";
         obj.data.vip_level = "2";
         obj.data.vip_expiration_time = "2099-09-09 09:09:09";
