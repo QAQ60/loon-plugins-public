@@ -1,23 +1,20 @@
 #!name=考试宝 kaoshibao
-#!desc=考试宝 VIP/付费题库解锁。真实接口 ksbapi.jxedt.com，脚本自托管，适配 4.7.8 的 /user/UserInfo 路径。
+#!desc=考试宝 VIP/付费题库解锁（Loon 3.5.1+ 新 Script 语法）。接口 ksbapi.jxedt.com，不依赖抓包开关。
 #!tag=考试宝
 
 [Rewrite]
 ^https:\/\/(api\.ankianki\.com|api\.kaoshibao\.com|ksbapi\.jxedt\.com)\/banner\/get$ - reject
 
 [Script]
-http-response ^https:\/\/(api\.ankianki\.com|api\.kaoshibao\.com|ksbapi\.jxedt\.com)\/[Uu]ser script-path=https://fastly.jsdelivr.net/gh/QAQ60/loon-plugins-public@47b0382/scripts/kaoshibao.js, requires-body=true, timeout=60, tag=kaoshibao-user
-http-response ^https:\/\/(api\.ankianki\.com|api\.kaoshibao\.com|ksbapi\.jxedt\.com|search-api\.yisouti\.com)\/(kaoShi|paper|mockExam|document|questions|search|banner|vip|member|pay|order)\/ script-path=https://fastly.jsdelivr.net/gh/QAQ60/loon-plugins-public@47b0382/scripts/kaoshibao.js, requires-body=true, timeout=60, tag=kaoshibao-api
+response if ${url} ~= /^https:\/\/(api\.ankianki\.com|api\.kaoshibao\.com|ksbapi\.jxedt\.com)\/[Uu]ser/i then script("https://fastly.jsdelivr.net/gh/QAQ60/loon-plugins-public@4802e50/scripts/kaoshibao.js") with tag="kaoshibao-user", timeout=60, requires_body=true
+response if ${url} ~= /^https:\/\/(api\.ankianki\.com|api\.kaoshibao\.com|ksbapi\.jxedt\.com|search-api\.yisouti\.com)\/(kaoShi|paper|mockExam|document|questions|search|banner|vip|member|pay|order)\//i then script("https://fastly.jsdelivr.net/gh/QAQ60/loon-plugins-public@4802e50/scripts/kaoshibao.js") with tag="kaoshibao-api", timeout=60, requires_body=true
 
 [MITM]
 hostname = %APPEND% ksbapi.jxedt.com, api.ankianki.com, api.kaoshibao.com, search-api.yisouti.com
 
 # 说明:
-# 1. 考试宝 4.7.8 的实际接口在 ksbapi.jxedt.com，路径形如 /user/UserInfo/isJxtUser（大写），
-#    所以 user 类接口用 [Uu]ser 做大小写兼容，其余接口不再写死具体子路径。
-# 2. api.ankianki.com / api.kaoshibao.com 为历史域名，保留兼容旧版本。
-# 3. 与 lcks.plugin 会命中同一批 /user 接口，两个插件不要同时启用。
-# 4. 脚本地址默认 fastly.jsdelivr.net，下载失败时依次替换为：
-#    https://gcore.jsdelivr.net/gh/QAQ60/loon-plugins-public@47b0382/scripts/kaoshibao.js
-#    https://cdn.jsdelivr.net/gh/QAQ60/loon-plugins-public@47b0382/scripts/kaoshibao.js
-#    https://ghfast.top/https://raw.githubusercontent.com/QAQ60/loon-plugins-public/master/scripts/kaoshibao.js?v=4
+# 1. 本版改用 Loon 3.5.1+ 的 response ... then script(...) 新语法，
+#    显式声明 requires_body=true，走新脚本管线的 body 缓存路径。
+#    若 Loon 低于 3.5.1 或加载报错，请改用 kaoshibao-legacy.plugin（旧语法）。
+# 2. 已覆盖 rest_exam_count（剩余考试次数改为 9999）。
+# 3. 脚本地址固定到提交 4802e50，避免 CDN 缓存旧文件。
