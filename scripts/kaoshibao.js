@@ -164,6 +164,8 @@ try {
 
     $done({ body: JSON.stringify(obj) });
 } catch (e) {
+    console.log("[kaoshibao] parse failed: " + e + " | body head: " + String(body).slice(0, 120));
+    $notification.post("考试宝脚本已命中，但响应不是 JSON", String(body).slice(0, 60), "接口可能加密或改版");
     $done({});
 }
 })();
