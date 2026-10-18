@@ -7,6 +7,19 @@
 | 文件 | 说明 | 状态 |
 |---|---|---|
 | `lcks.plugin` | 驾校一点通 `ksbapi.jxedt.com/user/userInfo/get` 响应体改写（由 Quantumult X 版 `lcks.conf` 转换） | 可用，依赖第三方 JS |
+| `kaoshibao.plugin` | 考试宝（api.ankianki.com / api.kaoshibao.com）VIP 与付费题库解锁，含 banner 屏蔽 | 可用，脚本已自托管在 `scripts/kaoshibao.js` |
+
+### 考试宝插件说明
+
+- 上游 `Yu9191/Rewrite` 账号已被删除，原 `kaoshibao.js` 地址 404，插件改为引用本仓库 `scripts/kaoshibao.js`，不再依赖第三方。
+- 接口域名：`api.ankianki.com`（旧）与 `api.kaoshibao.com`（新）解析到同一后端 `fe-jx-v4.op.jxedt.com`，插件同时覆盖两者。
+- 相比原脚本修复了 `body` 为空时 `$done` 被调用两次的问题，并用 IIFE 包裹避免顶层 `return` 在部分引擎下报错。
+
+订阅地址：
+
+```
+https://raw.githubusercontent.com/QAQ60/loon-plugins-public/master/kaoshibao.plugin
+```
 
 ## 安装
 
