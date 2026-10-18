@@ -1,21 +1,16 @@
 #!name=考试宝 kaoshibao
-#!desc=考试宝 VIP/付费题库/搜题识图解锁（Loon 3.5.1+ 新语法），接口 ksbapi.jxedt.com、search-api.ksedt.com。
+#!desc=考试宝 VIP/付费题库/搜题识图解锁（旧语法版，兼容全部 Loon 版本）。接口 ksbapi.jxedt.com、search-api.ksedt.com。
 #!tag=考试宝
 
 [Rewrite]
 ^https:\/\/(api\.ankianki\.com|api\.kaoshibao\.com|ksbapi\.jxedt\.com)\/banner\/get$ - reject
 
 [Script]
-response if ${url} ~= /^https:\/\/(api\.ankianki\.com|api\.kaoshibao\.com|ksbapi\.jxedt\.com)\/[Uu]ser/i then script("https://fastly.jsdelivr.net/gh/QAQ60/loon-plugins-public@4357004/scripts/kaoshibao.js") with tag="kaoshibao-user", timeout=60, requires_body=true
-response if ${url} ~= /^https:\/\/(api\.ankianki\.com|api\.kaoshibao\.com|ksbapi\.jxedt\.com|search-api\.yisouti\.com)\/(kaoShi|paper|mockExam|document|questions|search|banner|vip|member|pay|order)\//i then script("https://fastly.jsdelivr.net/gh/QAQ60/loon-plugins-public@4357004/scripts/kaoshibao.js") with tag="kaoshibao-api", timeout=60, requires_body=true
-response if ${url} ~= /^https:\/\/(search-api\.ksedt\.com|gw-api\.jxedt\.com)\//i then script("https://fastly.jsdelivr.net/gh/QAQ60/loon-plugins-public@4357004/scripts/kaoshibao.js") with tag="kaoshibao-search", timeout=60, requires_body=true
+http-response ^https:\/\/(api\.ankianki\.com|api\.kaoshibao\.com|ksbapi\.jxedt\.com)\/[Uu]ser script-path=https://fastly.jsdelivr.net/gh/QAQ60/loon-plugins-public@4357004/scripts/kaoshibao.js, requires-body=true, timeout=60, tag=kaoshibao-user
+http-response ^https:\/\/(api\.ankianki\.com|api\.kaoshibao\.com|ksbapi\.jxedt\.com|search-api\.yisouti\.com)\/(kaoShi|paper|mockExam|document|questions|search|banner|vip|member|pay|order)\/ script-path=https://fastly.jsdelivr.net/gh/QAQ60/loon-plugins-public@4357004/scripts/kaoshibao.js, requires-body=true, timeout=60, tag=kaoshibao-api
+http-response ^https:\/\/(search-api\.ksedt\.com|gw-api\.jxedt\.com)\/ script-path=https://fastly.jsdelivr.net/gh/QAQ60/loon-plugins-public@4357004/scripts/kaoshibao.js, requires-body=true, timeout=60, tag=kaoshibao-search
 
 [MITM]
 hostname = %APPEND% ksbapi.jxedt.com, api.ankianki.com, api.kaoshibao.com, search-api.yisouti.com, search-api.ksedt.com, gw-api.jxedt.com
 
-# 说明:
-# 1. 搜题/识图：search-api.ksedt.com 下所有 /api/question/ 接口会放宽"剩余次数"字段
-#    (times/rest/rest_count/free_times/remain*/left* 等)，并开启 need_vip、photo_search_status 一类的开关，
-#    但不动 limit / total_count 这类分页和统计字段，避免列表变慢。
-# 2. gw-api.jxedt.com/app/config 里的 result.qstskill.data.times（免费搜题次数）改为 9999。
-# 3. 脚本地址固定到 4357004；与 kaoshibao-legacy.plugin 二选一启用。
+# 旧版兼容文件：与 kaoshibao.plugin 二选一启用，不要同时开。
