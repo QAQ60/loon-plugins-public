@@ -1,0 +1,15 @@
+#!name=考试宝 kaoshibao (旧语法)
+#!desc=考试宝 VIP 解锁的旧语法版，兼容 Loon 3.5.0 及以下；需要开启抓包才能拿到响应体。
+#!tag=考试宝
+
+[Rewrite]
+^https:\/\/(api\.ankianki\.com|api\.kaoshibao\.com|ksbapi\.jxedt\.com)\/banner\/get$ - reject
+
+[Script]
+http-response ^https:\/\/(api\.ankianki\.com|api\.kaoshibao\.com|ksbapi\.jxedt\.com)\/[Uu]ser script-path=https://fastly.jsdelivr.net/gh/QAQ60/loon-plugins-public@4802e50/scripts/kaoshibao.js, requires-body=true, timeout=60, tag=kaoshibao-user
+http-response ^https:\/\/(api\.ankianki\.com|api\.kaoshibao\.com|ksbapi\.jxedt\.com|search-api\.yisouti\.com)\/(kaoShi|paper|mockExam|document|questions|search|banner|vip|member|pay|order)\/ script-path=https://fastly.jsdelivr.net/gh/QAQ60/loon-plugins-public@4802e50/scripts/kaoshibao.js, requires-body=true, timeout=60, tag=kaoshibao-api
+
+[MITM]
+hostname = %APPEND% ksbapi.jxedt.com, api.ankianki.com, api.kaoshibao.com, search-api.yisouti.com
+
+# 旧版兼容文件：与 kaoshibao.plugin 二选一启用，不要同时开。
