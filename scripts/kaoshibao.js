@@ -161,7 +161,7 @@ try {
             }
         }
     }
-    else {
+    else if (/\/(kaoShi|paper|mockExam|document|questions|coupon|search)\//i.test(url)) {
         if (obj.data) {
             if (obj.data.hasOwnProperty("sell_way")) obj.data.sell_way = "0";
             if (obj.data.hasOwnProperty("price")) obj.data.price = "0";
