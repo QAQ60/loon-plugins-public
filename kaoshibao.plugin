@@ -1,20 +1,21 @@
 #!name=考试宝 kaoshibao
-#!desc=考试宝 VIP/付费题库解锁（Loon 3.5.1+ 新 Script 语法）。接口 ksbapi.jxedt.com，不依赖抓包开关。
+#!desc=考试宝 VIP/付费题库/搜题识图解锁（Loon 3.5.1+ 新语法），接口 ksbapi.jxedt.com、search-api.ksedt.com。
 #!tag=考试宝
 
 [Rewrite]
 ^https:\/\/(api\.ankianki\.com|api\.kaoshibao\.com|ksbapi\.jxedt\.com)\/banner\/get$ - reject
 
 [Script]
-response if ${url} ~= /^https:\/\/(api\.ankianki\.com|api\.kaoshibao\.com|ksbapi\.jxedt\.com)\/[Uu]ser/i then script("https://fastly.jsdelivr.net/gh/QAQ60/loon-plugins-public@4802e50/scripts/kaoshibao.js") with tag="kaoshibao-user", timeout=60, requires_body=true
-response if ${url} ~= /^https:\/\/(api\.ankianki\.com|api\.kaoshibao\.com|ksbapi\.jxedt\.com|search-api\.yisouti\.com)\/(kaoShi|paper|mockExam|document|questions|search|banner|vip|member|pay|order)\//i then script("https://fastly.jsdelivr.net/gh/QAQ60/loon-plugins-public@4802e50/scripts/kaoshibao.js") with tag="kaoshibao-api", timeout=60, requires_body=true
+response if ${url} ~= /^https:\/\/(api\.ankianki\.com|api\.kaoshibao\.com|ksbapi\.jxedt\.com)\/[Uu]ser/i then script("https://fastly.jsdelivr.net/gh/QAQ60/loon-plugins-public@d09a9e2/scripts/kaoshibao.js") with tag="kaoshibao-user", timeout=60, requires_body=true
+response if ${url} ~= /^https:\/\/(api\.ankianki\.com|api\.kaoshibao\.com|ksbapi\.jxedt\.com|search-api\.yisouti\.com)\/(kaoShi|paper|mockExam|document|questions|search|banner|vip|member|pay|order)\//i then script("https://fastly.jsdelivr.net/gh/QAQ60/loon-plugins-public@d09a9e2/scripts/kaoshibao.js") with tag="kaoshibao-api", timeout=60, requires_body=true
+response if ${url} ~= /^https:\/\/(search-api\.ksedt\.com|gw-api\.jxedt\.com)\//i then script("https://fastly.jsdelivr.net/gh/QAQ60/loon-plugins-public@d09a9e2/scripts/kaoshibao.js") with tag="kaoshibao-search", timeout=60, requires_body=true
 
 [MITM]
-hostname = %APPEND% ksbapi.jxedt.com, api.ankianki.com, api.kaoshibao.com, search-api.yisouti.com
+hostname = %APPEND% ksbapi.jxedt.com, api.ankianki.com, api.kaoshibao.com, search-api.yisouti.com, search-api.ksedt.com, gw-api.jxedt.com
 
 # 说明:
-# 1. 本版改用 Loon 3.5.1+ 的 response ... then script(...) 新语法，
-#    显式声明 requires_body=true，走新脚本管线的 body 缓存路径。
-#    若 Loon 低于 3.5.1 或加载报错，请改用 kaoshibao-legacy.plugin（旧语法）。
-# 2. 已覆盖 rest_exam_count（剩余考试次数改为 9999）。
-# 3. 脚本地址固定到提交 4802e50，避免 CDN 缓存旧文件。
+# 1. 搜题/识图：search-api.ksedt.com 下所有 /api/question/ 接口会放宽"剩余次数"字段
+#    (times/rest/rest_count/free_times/remain*/left* 等)，并开启 need_vip、photo_search_status 一类的开关，
+#    但不动 limit / total_count 这类分页和统计字段，避免列表变慢。
+# 2. gw-api.jxedt.com/app/config 里的 result.qstskill.data.times（免费搜题次数）改为 9999。
+# 3. 脚本地址固定到 d09a9e2；与 kaoshibao-legacy.plugin 二选一启用。
