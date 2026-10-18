@@ -1,0 +1,16 @@
+#!name=驾校一点通 userInfo 改写(Loon)
+#!desc=由 Quantumult X 版 lcks.conf 转换而来的 Loon 插件。仅作格式参考，使用前请自行评估风险。
+#!system=ios
+
+[Script]
+http-response ^https?://ksbapi\.jxedt\.com/user/userInfo/get script-path=https://raw.githubusercontent.com/lichuntu/js/main/lcksb.js, requires-body=true, timeout=10, tag=jxedt-userinfo
+
+[MITM]
+hostname = %APPEND% ksbapi.jxedt.com
+
+# 说明:
+# 1. raw.githubusercontent.com 加载失败时，可把 script-path 换成镜像:
+#    https://cdn.jsdelivr.net/gh/lichuntu/js@main/lcksb.js
+#    或 https://ghfast.top/https://raw.githubusercontent.com/lichuntu/js/main/lcksb.js
+# 2. 该脚本会无差别覆盖昵称(李春)、public_uid(88888888)、性别等字段，属于作者写死的副作用。
+# 3. 需在 Loon 中开启 MITM 并安装/信任证书，否则重写不会生效。
