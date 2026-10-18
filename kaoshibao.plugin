@@ -6,9 +6,9 @@
 ^https:\/\/(api\.ankianki\.com|api\.kaoshibao\.com|ksbapi\.jxedt\.com)\/banner\/get$ - reject
 
 [Script]
-http-response ^https:\/\/(api\.ankianki\.com|api\.kaoshibao\.com|ksbapi\.jxedt\.com)\/[Uu]ser script-path=https://fastly.jsdelivr.net/gh/QAQ60/loon-plugins-public@be75870/scripts/kaoshibao.js, requires-body=true, timeout=60, tag=kaoshibao-user
-http-response ^https:\/\/(api\.ankianki\.com|api\.kaoshibao\.com|ksbapi\.jxedt\.com|search-api\.yisouti\.com)\/(kaoShi|paper|mockExam|document|questions|search|banner|vip|member|pay|order)\/ script-path=https://fastly.jsdelivr.net/gh/QAQ60/loon-plugins-public@be75870/scripts/kaoshibao.js, requires-body=true, timeout=60, tag=kaoshibao-api
-http-response ^https:\/\/(search-api\.ksedt\.com|gw-api\.jxedt\.com)\/ script-path=https://fastly.jsdelivr.net/gh/QAQ60/loon-plugins-public@be75870/scripts/kaoshibao.js, requires-body=true, timeout=60, tag=kaoshibao-search
+http-response ^https:\/\/(api\.ankianki\.com|api\.kaoshibao\.com|ksbapi\.jxedt\.com)\/[Uu]ser script-path=https://fastly.jsdelivr.net/gh/QAQ60/loon-plugins-public@7b4b901/scripts/kaoshibao.js, requires-body=true, timeout=60, tag=kaoshibao-user
+http-response ^https:\/\/(api\.ankianki\.com|api\.kaoshibao\.com|ksbapi\.jxedt\.com|search-api\.yisouti\.com)\/(kaoShi|paper|mockExam|document|questions|search|banner|vip|member|pay|order)\/ script-path=https://fastly.jsdelivr.net/gh/QAQ60/loon-plugins-public@7b4b901/scripts/kaoshibao.js, requires-body=true, timeout=60, tag=kaoshibao-api
+http-response ^https:\/\/(search-api\.ksedt\.com|gw-api\.jxedt\.com)\/ script-path=https://fastly.jsdelivr.net/gh/QAQ60/loon-plugins-public@7b4b901/scripts/kaoshibao.js, requires-body=true, timeout=60, tag=kaoshibao-search
 
 [MITM]
 hostname = %APPEND% ksbapi.jxedt.com, api.ankianki.com, api.kaoshibao.com, search-api.yisouti.com, search-api.ksedt.com, gw-api.jxedt.com
