@@ -1,9 +1,0 @@
-#!name=考试宝 极简测试
-#!desc=只匹配 ksbapi.jxedt.com 一个域名，用于验证 Loon 是否执行插件脚本。用完删除。
-#!tag=测试
-
-[Script]
-http-response ^https:\/\/ksbapi\.jxedt\.com\/ script-path=https://fastly.jsdelivr.net/gh/QAQ60/loon-plugins-public@a5debcd/scripts/kaoshibao.js, requires-body=true, timeout=60, tag=ksb
-
-[MITM]
-hostname = %APPEND% ksbapi.jxedt.com

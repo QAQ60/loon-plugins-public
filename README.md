@@ -1,71 +1,54 @@
 # loon-plugins
 
-个人 Loon 插件集合。
+个人代理工具插件集合。
 
-## 插件列表
+## 文件说明
 
-| 文件 | 说明 | 状态 |
+| 文件 | 适用工具 | 说明 |
 |---|---|---|
-| `lcks.plugin` | 驾校一点通 `ksbapi.jxedt.com/user/userInfo/get` 响应体改写（由 Quantumult X 版 `lcks.conf` 转换） | 可用，依赖第三方 JS |
-| `kaoshibao.plugin` | 考试宝（api.ankianki.com / api.kaoshibao.com）VIP 与付费题库解锁，含 banner 屏蔽 | 可用，脚本已自托管在 `scripts/kaoshibao.js` |
+| `kaoshibao.plugin` | Loon 3.5.1+ | 考试宝 VIP / 付费题库 / 搜题识图解锁 |
+| `kaoshibao.sgmodule` | Shadowrocket 小火箭 | 同上，功能一致 |
+| `lcks.plugin` | Loon | 驾校一点通 userInfo 改写 |
+| `scripts/kaoshibao.js` | — | 考试宝插件实际执行的 JS，插件里引用它 |
 
-### 考试宝插件说明
+## 订阅地址
 
-- 上游 `Yu9191/Rewrite` 账号已被删除，原 `kaoshibao.js` 地址 404，插件改为引用本仓库 `scripts/kaoshibao.js`，不再依赖第三方。
-- 实测真实接口域名为 `ksbapi.jxedt.com`（与驾校一点通共用后端），插件已覆盖；`api.ankianki.com`、`api.kaoshibao.com` 为历史域名，保留兼容。
-- 注意：本插件与 `lcks.plugin` 会命中同一个 `/user/userInfo/get` 接口，Loon 对同一 URL 只执行先加载的一个脚本，两者不要同时启用。
-- 相比原脚本修复了 `body` 为空时 `$done` 被调用两次的问题，并用 IIFE 包裹避免顶层 `return` 在部分引擎下报错。
-
-订阅地址：
+Loon（插件）：
 
 ```
-https://raw.githubusercontent.com/QAQ60/loon-plugins-public/master/kaoshibao.plugin
+https://ghfast.top/https://raw.githubusercontent.com/QAQ60/loon-plugins-public/master/kaoshibao.plugin
 ```
 
-## 安装
-
-**方式一：文件导入**
-
-下载 `lcks.plugin`，在 Loon「配置 → 插件 → 从文件导入」中选中它。
-
-**方式二：URL 添加（公开镜像仓库）**
-
-Loon「配置 → 插件 → 从 URL 添加」，填入：
+小火箭（模块）：
 
 ```
-https://raw.githubusercontent.com/QAQ60/loon-plugins-public/master/lcks.plugin
+https://ghfast.top/https://raw.githubusercontent.com/QAQ60/loon-plugins-public/master/kaoshibao.sgmodule
 ```
 
-raw 访问不稳定时换 jsDelivr 镜像：
+## 接口说明
 
-```
-https://cdn.jsdelivr.net/gh/QAQ60/loon-plugins-public@master/lcks.plugin
-```
+考试宝与驾校一点通属同一家，共用后端：
 
-> 本仓库（`loon-plugins`）为私有源，`loon-plugins-public` 是面向 Loon 订阅的公开镜像，两者内容一致。
+| 域名 | 用途 |
+|---|---|
+| `ksbapi.jxedt.com` | 用户信息、VIP 状态、题库、考试次数（考试宝实际使用的入口） |
+| `api.ankianki.com` / `api.kaoshibao.com` | 历史域名，保留兼容 |
+| `search-api.ksedt.com` | 搜题 / 识图 / OCR |
+| `gw-api.jxedt.com` | 全局配置，含免费搜题次数 `qstskill.times` |
+| `search-api.yisouti.com` | 旧搜题接口，保留兼容 |
 
-**方式三：单条重写（最轻量）**
+插件里出现 `jxedt` 域名是正常的，不是拿错了驾校一点通的配置。
 
-在 Loon「配置 → 重写 → 新建」：
+## 已知限制
 
-- 类型：`http-response`
-- 正则：`^https?://ksbapi\.jxedt\.com/user/userInfo/get`
-- 脚本：`https://raw.githubusercontent.com/lichuntu/js/main/lcksb.js`
-- 勾选「需要 Body」
+- **Loon 3.5.0 不执行本插件脚本**：实测 3.5.0 上 `http-response` 脚本关闭抓包时完全不触发，手动新建脚本同样无效。请升级到 3.5.1 及以上。
+- **Loon 需要开启抓包**：在部分版本上，关闭抓包后脚本无法获取响应体，表现为“装了但没效果”。
+- **小火箭没有上述限制**，`requires-body=1` 独立生效，推荐用小火箭模块。
 
-## 前置条件
+## 修改记录
 
-1. 开启 Loon 的 MITM 开关。
-2. 安装并信任 Loon 的根证书。
-3. `ksbapi.jxedt.com` 在 MITM hostname 列表中（插件里已用 `%APPEND%` 追加）。
+- 2026-10-18：从 Quantumult X 配置转为 Loon 插件；补充 `ksbapi.jxedt.com`、`search-api.ksedt.com`、`gw-api.jxedt.com`；脚本加入 JSON 容错（Loon 会把响应头拼进 body）；新增小火箭模块。
 
-## 说明与风险
+## 风险声明
 
-- 脚本由第三方作者 lichun 提供，本仓库只做 Quantumult X → Loon 的格式转换，未修改 JS 逻辑。
-- 脚本会无差别覆盖昵称（改为「李春」）、`public_uid`（88888888）、性别等字段，属于原脚本写死的副作用。
-- 该脚本通过篡改响应体伪造会员字段，属于绕过 App 付费权益，违反其用户协议，存在被风控、封号或权益冻结的风险；接口一旦增加签名校验即失效。
-- 仅供格式研究与个人学习，请支持正版服务。
-
-## 变更记录
-
-- 2026-10-18：由 `lcks.conf`（Quantumult X）转换生成 Loon 插件格式。
+脚本通过篡改响应体伪造会员字段，属于绕过付费权益，违反服务条款，存在账号风控风险，接口加签后即失效。仅供格式研究与个人学习，请支持正版。
