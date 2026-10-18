@@ -8,8 +8,9 @@
 |---|---|---|
 | `kaoshibao.plugin` | Loon 3.5.1+ | 考试宝 VIP / 付费题库 / 搜题识图解锁 |
 | `kaoshibao.sgmodule` | Shadowrocket 小火箭 | 同上，功能一致 |
-| `lcks.plugin` | Loon | 驾校一点通 userInfo 改写 |
 | `scripts/kaoshibao.js` | — | 考试宝插件实际执行的 JS，插件里引用它 |
+
+> 原 `lcks.plugin`（驾校一点通）已删除。它和考试宝插件改的是同一个接口 `ksbapi.jxedt.com/user/userInfo/get`，两者同时开启会互相覆盖；而且它会把昵称改成「李春」、UID 改成 88888888，副作用比考试宝这版大。现在由考试宝插件统一处理。
 
 ## 订阅地址
 
