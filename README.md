@@ -14,9 +14,21 @@
 
 下载 `lcks.plugin`，在 Loon「配置 → 插件 → 从文件导入」中选中它。
 
-**方式二：URL 添加**
+**方式二：URL 添加（公开镜像仓库）**
 
-仓库为私有，raw 链接需要带 token 才能访问，Loon 无法直接订阅，请使用方法一，或把本文件内容复制到公开 Gist 后再用 Gist 的 raw 地址添加。
+Loon「配置 → 插件 → 从 URL 添加」，填入：
+
+```
+https://raw.githubusercontent.com/QAQ60/loon-plugins-public/master/lcks.plugin
+```
+
+raw 访问不稳定时换 jsDelivr 镜像：
+
+```
+https://cdn.jsdelivr.net/gh/QAQ60/loon-plugins-public@master/lcks.plugin
+```
+
+> 本仓库（`loon-plugins`）为私有源，`loon-plugins-public` 是面向 Loon 订阅的公开镜像，两者内容一致。
 
 **方式三：单条重写（最轻量）**
 
