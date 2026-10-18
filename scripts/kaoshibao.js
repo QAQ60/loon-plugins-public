@@ -29,7 +29,7 @@ function setBuyNumberToZero(obj) {
 try {
     let obj = JSON.parse(body);
 
-    if (url.includes("user/userInfo/get") && obj.data) {
+    if (/userinfo/i.test(url) && obj.data) {
         obj.data.vip_type = "2";
         obj.data.vip_level = "2";
         obj.data.vip_expiration_time = "2099-09-09 09:09:09";
