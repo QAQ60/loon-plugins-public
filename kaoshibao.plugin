@@ -1,16 +1,17 @@
 #!name=考试宝 kaoshibao
-#!desc=考试宝 VIP/付费题库/搜题识图解锁（旧语法版，兼容全部 Loon 版本）。接口 ksbapi.jxedt.com、search-api.ksedt.com。
+#!desc=考试宝 VIP/付费题库/搜题识图解锁。单条域名规则，避免多规则匹配顺序问题。
 #!tag=考试宝
 
 [Rewrite]
 ^https:\/\/(api\.ankianki\.com|api\.kaoshibao\.com|ksbapi\.jxedt\.com)\/banner\/get$ - reject
 
 [Script]
-http-response ^https:\/\/(api\.ankianki\.com|api\.kaoshibao\.com|ksbapi\.jxedt\.com)\/(user|User) script-path=https://fastly.jsdelivr.net/gh/QAQ60/loon-plugins-public@7b4b901/scripts/kaoshibao.js, requires-body=true, timeout=60, tag=kaoshibao-user
-http-response ^https:\/\/(api\.ankianki\.com|api\.kaoshibao\.com|ksbapi\.jxedt\.com|search-api\.yisouti\.com)\/(kaoShi|paper|mockExam|document|questions|search|banner|vip|member|pay|order)\/ script-path=https://fastly.jsdelivr.net/gh/QAQ60/loon-plugins-public@7b4b901/scripts/kaoshibao.js, requires-body=true, timeout=60, tag=kaoshibao-api
-http-response ^https:\/\/(search-api\.ksedt\.com|gw-api\.jxedt\.com)\/ script-path=https://fastly.jsdelivr.net/gh/QAQ60/loon-plugins-public@7b4b901/scripts/kaoshibao.js, requires-body=true, timeout=60, tag=kaoshibao-search
+http-response ^https:\/\/(api\.ankianki\.com|api\.kaoshibao\.com|ksbapi\.jxedt\.com|search-api\.ksedt\.com|search-api\.yisouti\.com|gw-api\.jxedt\.com)\/ script-path=https://fastly.jsdelivr.net/gh/QAQ60/loon-plugins-public@a5debcd/scripts/kaoshibao.js, requires-body=true, timeout=60, tag=kaoshibao
 
 [MITM]
 hostname = %APPEND% ksbapi.jxedt.com, api.ankianki.com, api.kaoshibao.com, search-api.yisouti.com, search-api.ksedt.com, gw-api.jxedt.com
 
-# 旧版兼容文件：与 kaoshibao.plugin 二选一启用，不要同时开。
+# 说明:
+# 1. 只保留一条脚本规则，覆盖 6 个域名下的全部请求；具体改写由脚本按 URL 判断，
+#    未识别的接口直接放行，不会误改。
+# 2. 脚本地址固定到 a5debcd。
