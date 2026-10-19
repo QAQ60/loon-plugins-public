@@ -1,23 +1,9 @@
 #!name=考试宝 kaoshibao
 #!desc=考试宝 VIP/付费题库/搜题识图解锁（Shadowrocket 模块）
 #!system=ios
-#!author=QAQ60
-#!homepage=https://github.com/QAQ60/loon-plugins-public
 
 [Script]
-http-response ^https?:\/\/(ksbapi|gw-api|search-api|userapi|kaoshiapi|legoapi|richmanrules)\.(jxedt|ksedt)\.com\/ script-path=https://fastly.jsdelivr.net/gh/QAQ60/loon-plugins-public@6f3a5f1a8da7576c07961213957e8aaa779119b9/scripts/kaoshibao.js?v=6f3a5f1a8da7576c07961213957e8aaa779119b9, requires-body=1, timeout=60, tag=kaoshibao
-http-response ^https?:\/\/(api\.ankianki\.com|api\.kaoshibao\.com|search-api\.yisouti\.com)\/ script-path=https://fastly.jsdelivr.net/gh/QAQ60/loon-plugins-public@6f3a5f1a8da7576c07961213957e8aaa779119b9/scripts/kaoshibao.js?v=6f3a5f1a8da7576c07961213957e8aaa779119b9, requires-body=1, timeout=60, tag=kaoshibao-legacy
-
-[URL Rewrite]
-^https?:\/\/(api\.ankianki\.com|api\.kaoshibao\.com|ksbapi\.jxedt\.com)\/banner\/get$ - reject
+http-response ^https:\/\/(ksbapi\.jxedt\.com|api\.ankianki\.com|api\.kaoshibao\.com|search-api\.ksedt\.com|search-api\.yisouti\.com|gw-api\.jxedt\.com)\/ script-path=https://fastly.jsdelivr.net/gh/QAQ60/loon-plugins-public@758bc36/scripts/kaoshibao.js, requires-body=1, timeout=60, tag=kaoshibao
 
 [MITM]
-hostname = %APPEND% ksbapi.jxedt.com, gw-api.jxedt.com, search-api.ksedt.com, userapi.ksedt.com, kaoshiapi.ksedt.com, legoapi.ksedt.com, richmanrules.ksedt.com, api.ankianki.com, api.kaoshibao.com, search-api.yisouti.com
-
-# ------------------------------------------------------------
-# 说明
-# 1. 小火箭的 requires-body 独立生效，不依赖「抓包」开关，推荐用本模块。
-# 2. 若官方加新域名，可把 hostname 换成通配：
-#      hostname = %APPEND% *.jxedt.com, *.ksedt.com, *.ankianki.com, *.kaoshibao.com, *.yisouti.com
-# 3. 排障：把 scripts/kaoshibao.js 顶部 DEBUG 改成 true。
-# ------------------------------------------------------------
+hostname = %APPEND% ksbapi.jxedt.com, api.ankianki.com, api.kaoshibao.com, search-api.ksedt.com, search-api.yisouti.com, gw-api.jxedt.com
